@@ -1,4 +1,12 @@
 \documentclass[]{article}
+% \begin{enumerate}
+%   \item	The input file shall contain no more than 50 lines.  Each line shall be
+%   formed by a record where the fields are delineated by commas.  The record
+%   shall contain at least 4 fields and no more than 10 fields.
+%   \item The third field on any given line of the input file will always contain
+%   less than $2^{20}$ characters.
+%   \item 
+%\end{enumerate}
 
 % Imported Packages
 %------------------------------------------------------------------------------
@@ -12,6 +20,29 @@
 \usepackage{graphicx}
 \usepackage{extarrows}
 \usepackage{setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 %------------------------------------------------------------------------------
 
 % Header and Footer
@@ -76,8 +107,8 @@ correctness of the program output will be examined with whitebox testing.
 \label{sub:references}
 % Begin SubSection
 Due to the size and nature of the project, it is forcasted that there will be
-roughly ten to twenty defects in the program.  A more formal estimate will be
-provided after the completion of this testing iteration.
+roughly thirty errors per one hundred lines of code in the program.  A more
+formal estimate will be provided after the completion of this testing iteration.
 % End SubSection
 
 % \subsection{Overview}
@@ -97,35 +128,38 @@ provided after the completion of this testing iteration.
 
 \subsection{Software Description}
 \label{sub:product_perspective}
-% Begin SubSection
-The program will ask the user for the name of a file as input.  If the input
-from the user raises  a \verb!FileNotFoundException!, the program will notify
-the user and ask for another input, up to a maximum of three attempts. Inputs to the
-program will be given in a plaintext document containing at most fifty lines containing a record of four to ten fields delineated by a comma.
-The program will read the contents of the file, and will produce a file named
-``output.txt'' containing lines of the following format when the line i+6
-exists:
-\begin{center}
-\verb!i,_n(i,A),_n(i,D),_n(i,W),_____i+6,_n(i+6,A),_n(i+6,D),_n(i+6,W)!\
-\end{center}
-where \_ denotes a space character.  If the line indexed with i+6 does not
-exist, the line in output should be as follows:
-\begin{center}
-\verb!_i,_n(i,A),_n(i,D),_n(i,W),______i + 6,_0,_0,_0!
-\end{center}
-Additionally, every six lines of the output file should separated a summary of
-the previous six lines in the format:
-\begin{center}
-\verb!For the above 6 lines, number of A:_nA_****_number of D:_nD_!
-\verb!****_number of W: _nW!
-\end{center}
+	% Begin SubSection
+	The program will ask the user for the name of a file as input.  If the input
+	from the user raises  a \verb!FileNotFoundException!, the program will notify
+	the user and ask for another input, up to a maximum of three attempts. Inputs to the
+	program will be given in a plaintext document containing at most fifty lines containing a record of four to ten fields delineated by a comma.
+	The program will read the contents of the file, and will produce a file named
+	``output.txt'' containing lines of the following format when the line i+6
+	exists:
+	\begin{center}
+	\verb!i,_n(i,A),_n(i,D),_n(i,W),_____i+6,_n(i+6,A),_n(i+6,D),_n(i+6,W)!\
+	\end{center}
+	where \_ denotes a space character.  If the line indexed with i+6 does not
+	exist, the line in output should be as follows:
+	\begin{center}
+	\verb!_i,_n(i,A),_n(i,D),_n(i,W),______i + 6,_0,_0,_0!
+	\end{center}
+	Additionally, every six lines of the output file should separated a summary of
+	the previous six lines in the format:
+	\begin{center}
+	\verb!For the above 6 lines, number of A:_nA_****_number of D:_nD_!
+	\verb!****_number of W: _nW!
+	\end{center}
 
 % End SubSection
 
 \subsection{Test Team}
 \label{sub:product_functions}
 % Begin SubSection
-
+The test team will Consist of Connor Hallett and \_\_\_\_\_\_\_\_\_.  Connor
+will preform the primary testing, and his findings will be used as seeds in the tests
+conducted by Jeremy.  This use of error seeding will allow Connor to estimate
+the number of defects remaining in the program after testing.
 % End SubSection
 
 \subsection{Milestones}
@@ -142,11 +176,10 @@ the previous six lines in the format:
 \subsection{Budget}
 \label{sub:constraints}
 % Begin SubSection
-A strict budget of \$0.00 CAD will be imposed on this project.  Excluding
-resources paid for in advance such as printer ink, paper, and electricity.  The
-tester executing the plan will work for free, and will not contract out any
-work.
-
+	A strict budget of \$0.00 CAD will be imposed on this project.  Excluding
+	resources paid for in advance such as printer ink, paper, and electricity.  The
+	tester executing the plan will work for free, and will not contract out any
+	work.
 % End SubSection
 
 % 
@@ -191,10 +224,161 @@ work.
   \item When an appropriate filename has been entered by the user, the program
   will create the file ``output.txt'' containing information on the number of
   appearances of the characters A, D, and W in the third field of every line in
-  the input file in the aforementioned format.
+  the input file in the aforementioned format (See 2.1).
+  \item Each six lines of the output file will be seperated by a line
+  containing a total number of characters reported in the previous six lines.
 \end{enumerate}
 % End SubSubSection
 
+\subsubsection{Structural Functions}
+\label{sub:user_characteristics}
+% Begin SubSubSection
+
+\begin{enumerate}
+  \item RecordReader.java
+  \begin{lstlisting}
+  class RecordReader {
+  ...
+  public static String[] readThirdFieldsFromFile(String inputFileName)
+    throws FileNotFoundException, IOException {
+    ...
+    while (record != null) {
+      ...
+    }
+    ...
+    return thirdFields;
+
+  }
+  \end{lstlisting} 
+
+  \item RecordProcessor.java
+% Begin SubSubSubSection
+\begin{lstlisting}
+class RecordProcessor
+...
+public static void process(String[] thirdFields) throws IOException {
+	...
+	while (lineNum <= RecordReader.MAX_LINE_NUM && !endReached) {
+      ...
+    }
+    ...
+	if (i + SUBSECTION_LENGTH < lineNum) {
+	  ...
+	}
+	...
+	if ((i + 1) % (2 * SUBSECTION_LENGTH) == SUBSECTION_LENGTH) {
+	  ...
+	  if (k < chars.length - 1) {
+	  ...
+        for (int k = 0; k < chars.length; k++) {
+          ...
+          if (k < chars.length - 1) {
+            ...
+          }
+        ...
+	    }
+	  ...
+	  }
+...
+}
+
+ public static void main(String args[]) throws IOException {
+ 	...
+	while ((!inputValid) && count < 4) {
+	  try {
+		...
+	  }
+	  catch (IOException e) {
+	    if (count >= 4){System.out.println("It is over!");};
+	  }
+	}
+	...
+}
+\end{lstlisting}
+\end{enumerate}
+% End SubSubSubSection
+
+% End SubSubSection
+
+\subsubsection{Test/Function Relationships}
+\label{sub:user_characteristics}
+% Begin SubSubSection
+
+\begin{enumerate}
+  \item RecordReader.java \break
+	In order to reach the entire structure of RecordReader, we will focus on
+	\verb!readThirdFieldsFromFile!.  The String input will be
+	chosen as follows: \begin{enumerate}
+  					\item ``test1.txt'' : A proper text file that contains 25 lines in the
+  					expected format.  This is expected to reach the \verb!while(record /=!
+  					\verb!null)! loop, execute its contents, and return an array containing
+  					the third fields of the file.
+  					\item ``test2.txt'' : A proper text file that contains nothing.  This
+  					input is expected to bypass the while loop and return \verb!null!.  
+  					\item ``test3.txt'' : A proper text file that contain 51 lines in the
+  					expected format.  It is expected that this function will only return an
+  					array error from attempting to access an element in an array that is out
+  					of the arrays predetermined size.
+  					\item ``test4.txt'' : A proper text file that contains 50 lines in the
+  					expected format.  It is expected that this function will return an array
+  					containing all 50 third fields of the input file.
+  					\item ''tt.txt'' : A filename that does not exist.  This is expected to
+  					throw \verb!FileNotFoundException!
+					\end{enumerate}
+  \item RecordProcessor.Java \break
+	
+\end{enumerate}
+
+% End SubSubSection
+
+% End SubSection
+\subsection{Methods and Constraints}
+% Begin SubSection
+	\subsubsection{Methodology}
+	\label{sub:user_characteristics}
+	% Begin SubSubSection
+	The majority of the testing in this testing iteration will be performed
+	manually inside of Eclipse.  If any changes are made throughout testing,
+	regression testing will be used to verify that all previously passed tests
+	still pass after the change is made.
+	% End SubSubSection
+	
+	\subsubsection{Test Tools}
+	% Begin SubSubSection
+	Test cases will be generated using the scripting language Python.
+	Tests will be executed manually through Eclipse.
+	% End SubSubSection
+	
+	\subsubsection{Extent}
+	% Begin SubSubSection
+	This test plan aims to have total coverage of the program.
+	% End SubSubSection
+	
+	\subsubsection{Data Recording}
+	% Begin SubSubSection
+	Data will be recorded manually into the Test Summary Report throughout testing.
+	Contents of the ``output.txt'' file will be manually inspected for correctness.
+	% End SubSubSection
+	
+	\subsubsection{Constrains}
+	% Begin SubSubSection
+	The main constraints on this test plan is the lack of personel available for
+	test purposes, the manual nature of execution of the test cases, and the
+	inspection required of the output file.
+	% End SubSubSection
+% End SubSection
+
+\subsection{Evaluation}
+% Begin SubSection
+	\subsubsection{Criteria}
+	% Begin SubSubSection
+	The test plan aims to cover as many possible inputs as possible on the
+	functions defined in the program.  This means utilizing empty files, null
+	strings, files with lengths longer than the maximum acceptable length, and
+	files that contain rectores with the third field containing more than $2^{20}$
+	characters.
+	% End SubSubSection
+	
 % End SubSection
 
 % End Section
