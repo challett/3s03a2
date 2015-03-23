@@ -1,0 +1,466 @@
+\documentclass[]{article}
+
+% Imported Packages
+%------------------------------------------------------------------------------
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{extarrows}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+%------------------------------------------------------------------------------
+
+% Header and Footer
+%------------------------------------------------------------------------------
+\pagestyle{plain}  
+\renewcommand\headrulewidth{0.4pt}                                      
+\renewcommand\footrulewidth{0.4pt}                                    
+%------------------------------------------------------------------------------
+
+% Title Details
+%------------------------------------------------------------------------------
+\title{Assignment 2 Test Report}
+\author{Connor Hallett}
+\date{March 23 2015}                               
+%------------------------------------------------------------------------------
+
+% Document
+%------------------------------------------------------------------------------
+\begin{document}
+
+\maketitle	
+
+\section{General Information}
+\label{sec:introduction}
+
+	\subsection{Summary}
+	The program being tested is designed to promt the user to enter the name of a
+text file.  IF the file cannot be opened, the program should catch any
+FileNotFoundExceptions, notify the user, and ask for another input until three
+failures occur.  If a proper file name is entered, the program will read the
+content of the file, count the number of occurences of the character A, D, and W
+in the third field of the record.  The program will output a summary on the
+number of occurences of these characters on each line in a file named
+``output.txt''. Stress testing, error handling, and black box testing were used
+in this test.
+
+	\subsection{Environment}
+	The program was
+provided by Dr. Ridha Khedri of McMaster University department of Computing and
+Software.  The testing will be preformed by Connor Hallett, a third year student
+of software engineering and management at McMaster University.
+
+\section{Test Results and Findings}
+
+\subsection{Error Handling - Wrong Filename}
+% Begin SubSection
+	\subsubsection{Validation}
+	% Begin SubSubSection
+	This test found that the program did not accept the correct number of attempts
+	to enter a proper filename.  After three attempts, the user was still prompted
+	to enter a filename.  After the fourth filename was entered, the program
+	terminated gracefully with a message.  A summary of the error and steps to fix
+	it can be found on the next page.
+	% End SubSubSection
+	
+	\subsubsection{Verification}
+	% Begin SubSubSection
+	Below is the output from the program when faced with the user entering an
+	incorrect filename until they are no longer allowed.
+	% End SubSubSection
+	
+	\begin{lstlisting}
+	Welcome to The Record Processor
+	-------------------------------
+	Please input the input file name: tt.txt
+	Sorry, cannot open the file for reading!
+	Please input the input file name: tt.txt
+	Sorry, cannot open the file for reading!
+	Please input the input file name: tt.txt
+	Sorry, cannot open the file for reading!
+	Please input the input file name: tt.txt
+	Sorry, cannot open the file for reading!
+	It is over!
+	\end{lstlisting}
+
+
+	\newpage
+	
+% End SubSection
+
+\subsection{Stress Testing - Empty File}
+% Begin SubSection
+	\subsubsection{Validation}
+	% Begin SubSubSection
+	The program passed the test as expected.
+	% End SubSubSection
+	
+	\subsubsection{Verification}
+	% Begin SubSubSection
+	Input for this test was test2.txt.  Below is the output from the program
+	\begin{lstlisting}
+	output.txt
+	
+	
+	
+	\end{lstlisting}
+	% End SubSubSection
+	
+	\newpage
+	
+% End SubSection
+
+\subsection{Error Handling - Third entry too large}
+% Begin SubSection
+	\subsubsection{Validation}
+	% Begin SubSubSection
+	Input for this test was test5.txt.  This test did not raise any errors. 
+	However, the output in output.txt was incorrect.  The numbers shown for the counts of A are much smaller than
+	expected.
+	% End SubSubSection
+	
+	\subsubsection{Verification}
+	% Begin SubSubSection
+	\begin{lstlisting}
+	output.txt
+	2, 1, 5, 0,      8, 1, 5, 0
+	3, 1, 5, 0,      9, 1, 5, 0
+	4, 1, 5, 0,      10, 1, 5, 0
+	5, 1, 5, 0,      11, 0, 0, 0
+	6, 1, 5, 0,      12, 0, 0, 0
+	For the above 6 lines, number of A: 8 **** number of D: 40 **** number of V: 0
+	\end{lstlisting}
+	\begin{lstlisting}
+	expected output.txt
+	1, 1048577, 5, 1,      6, 1048577, 5, 1
+	2, 1048577, 5, 1,      7, 1048577, 5, 1
+	3, 1048577, 5, 1,      8, 1048577, 5, 1
+	4, 1048577, 5, 1,      9, 1048577, 5, 1
+	5, 1048577, 5, 1,      10, 0, 0, 0
+	6, 1048577, 5, 1,      11, 0, 0, 0
+	For the above 6 lines, the number of A: 6291462 **** the number of D: 30 **** the number of W: 6
+	7, 1048577, 5, 1,      12, 0, 0, 0
+	8, 1048577, 5, 1,      13, 0, 0, 0
+	9, 1048577, 5, 1,      14, 0, 0, 0
+	10, 1048577, 5, 1,      15, 0, 0, 0
+	\end{lstlisting}
+	% End SubSubSection
+	
+	\newpage
+	
+% End SubSection
+
+\subsection{Stress Testing - Third entry maximum size}
+% Begin SubSection
+	\subsubsection{Validation}
+	% Begin SubSubSection
+	The file ``test6.txt'' was used for this test.  This test showed that overflow
+	occured even when the input was inside of the range to be expected.  A summary
+	of this defect and steps to fix it can be found on the next page.
+	% End SubSubSection
+	
+	\subsubsection{Verification}
+	% Begin SubSubSection
+	\begin{lstlisting}
+	output.txt
+	2, -6, 5, 0,      8, -6, 5, 0
+	3, -6, 5, 0,      9, -6, 5, 0
+	4, -6, 5, 0,      10, -6, 5, 0
+	5, -6, 5, 0,      11, 0, 0, 0
+	6, -6, 5, 0,      12, 0, 0, 0
+	For the above 6 lines, number of A: -48 **** number of D: 40 **** number of V: 0
+
+	\end{lstlisting}
+	\begin{lstlisting}
+	expected output.txt
+	1, 1048570, 5, 1,      6, 1048570, 5, 1
+	2, 1048570, 5, 1,      7, 1048570, 5, 1
+	3, 1048570, 5, 1,      8, 1048570, 5, 1
+	4, 1048570, 5, 1,      9, 1048570, 5, 1
+	5, 1048570, 5, 1,      10, 0, 0, 0
+	6, 1048570, 5, 1,      11, 0, 0, 0
+	For the above 6 lines, the number of A: 6291420 **** the number of D: 30 **** the number of W: 6
+	7, 1048570, 5, 1,      12, 0, 0, 0
+	8, 1048570, 5, 1,      13, 0, 0, 0
+	9, 1048570, 5, 1,      14, 0, 0, 0
+	10, 1048570, 5, 1,      15, 0, 0, 0
+	\end{lstlisting}
+	% End SubSubSection
+	
+	\newpage
+	
+% End SubSection
+
+\subsection{Blackbox Testing - 1}
+% Begin SubSection
+	\subsubsection{Validation}
+	% Begin SubSubSection
+	The input file test1.txt and test7.txt were used for these blackbox tests.  The
+	tests revealed that the program did not properly count the number of W's in the
+	third fields of the input files.  It also revealed that multiple lines of the
+	input file were being skipped, and that the sum in the six line summaries was
+	incorrect.  Overviews and remedies for these issues can be found on the next
+	few pages.
+	% End SubSubSection
+	
+	\subsubsection{Verification}
+	% Begin SubSubSection
+	\begin{lstlisting}
+	test1.txt
+	output.txt
+	2, 1, 6, 0,      8, 0, 9, 0
+	3, 3, 2, 0,      9, 14, 16, 0
+	4, 14, 10, 0,      10, 18, 0, 0
+	5, 0, 6, 0,      11, 0, 12, 0
+	6, 13, 12, 0,      12, 16, 0, 0
+	For the above 6 lines, number of A: 79 **** number of D: 73 **** number of V: 0
+	13, 17, 4, 0,      19, 4, 8, 0
+	14, 15, 14, 0,      20, 15, 6, 0
+	15, 17, 18, 0,      21, 1, 18, 0
+	16, 19, 18, 0,      22, 5, 9, 0
+	17, 14, 19, 0,      23, 5, 12, 0
+	18, 3, 18, 0,      24, 8, 17, 0
+	For the above 6 lines, number of A: 123 **** number of D: 161 **** number of V: 0
+	25, 10, 4, 0,      31, 0, 0, 0
+	\end{lstlisting}
+	\begin{lstlisting}
+	expected output.txt
+	1, 18, 14, 15,      6, 4, 4, 1
+	2, 1, 6, 15,      7, 0, 9, 10
+	3, 3, 2, 19,      8, 14, 16, 14
+	4, 14, 10, 11,      9, 18, 0, 3
+	5, 0, 6, 17,      10, 0, 12, 6
+	6, 13, 12, 12,      11, 16, 0, 2
+	For the above 6 lines, the number of A: 49 **** the number of D: 50 **** the number of W: 89
+	7, 4, 4, 1,      12, 17, 4, 8
+	8, 0, 9, 10,      13, 15, 14, 9
+	9, 14, 16, 14,      14, 17, 18, 3
+	10, 18, 0, 3,      15, 19, 18, 13
+	11, 0, 12, 6,      16, 14, 19, 1
+	12, 16, 0, 2,      17, 3, 18, 18
+	For the above 6 lines, the number of A: 52 **** the number of D: 41 **** the number of W: 36
+	13, 17, 4, 8,      18, 4, 8, 9
+	14, 15, 14, 9,      19, 15, 6, 18
+	15, 17, 18, 3,      20, 1, 18, 2
+	16, 19, 18, 13,      21, 5, 9, 11
+	17, 14, 19, 1,      22, 5, 12, 8
+	18, 3, 18, 18,      23, 8, 17, 16
+	For the above 6 lines, the number of A: 85 **** the number of D: 91 **** the number of W: 52
+	19, 4, 8, 9,      24, 10, 4, 13
+	20, 15, 6, 18,      25, 0, 0, 0
+	21, 1, 18, 2,      26, 0, 0, 0
+	22, 5, 9, 11,      27, 0, 0, 0
+	23, 5, 12, 8,      28, 0, 0, 0
+	24, 8, 17, 16,      29, 0, 0, 0
+	For the above 6 lines, the number of A: 38 **** the number of D: 70 **** the number of W: 64
+	25, 10, 4, 13,      30, 0, 0, 0
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+	test7.txt
+	output.txt
+	2, 18, 18, 0,      8, 12, 14, 0
+	3, 7, 17, 0,      9, 18, 2, 0
+	4, 16, 16, 0,      10, 18, 12, 0
+	5, 16, 13, 0,      11, 5, 8, 0
+	6, 15, 11, 0,      12, 6, 13, 0
+	For the above 6 lines, number of A: 131 **** number of D: 124 **** number of V: 0
+	13, 8, 10, 0,      19, 6, 5, 0
+	14, 17, 15, 0,      20, 11, 10, 0
+	15, 14, 11, 0,      21, 10, 14, 0
+	16, 3, 8, 0,      22, 9, 14, 0
+	17, 6, 3, 0,      23, 11, 17, 0
+	18, 17, 2, 0,      24, 14, 10, 0
+	For the above 6 lines, number of A: 126 **** number of D: 119 **** number of V: 0
+	25, 10, 18, 0,      31, 10, 7, 0
+	26, 4, 1, 0,      32, 13, 9, 0
+	27, 9, 7, 0,      33, 5, 18, 0
+	28, 8, 4, 0,      34, 11, 17, 0
+	29, 16, 11, 0,      35, 18, 1, 0
+	30, 3, 3, 0,      36, 0, 3, 0
+	For the above 6 lines, number of A: 107 **** number of D: 99 **** number of V: 0
+	37, 9, 19, 0,      43, 18, 1, 0
+	38, 12, 2, 0,      44, 14, 6, 0
+	39, 12, 14, 0,      45, 0, 0, 0
+	40, 1, 9, 0,      46, 0, 0, 0
+	41, 5, 17, 0,      47, 0, 0, 0
+	42, 5, 0, 0,      48, 0, 0, 0
+	For the above 6 lines, number of A: 76 **** number of D: 68 **** number of V: 0
+
+	\end{lstlisting}
+	\begin{lstlisting}
+	expected output.txt
+	1, 1, 11, 14,      6, 19, 12, 11
+	2, 18, 18, 17,      7, 12, 14, 2
+	3, 7, 17, 18,      8, 18, 2, 14
+	4, 16, 16, 7,      9, 18, 12, 12
+	5, 16, 13, 9,      10, 5, 8, 17
+	6, 15, 11, 13,      11, 6, 13, 6
+	For the above 6 lines, the number of A: 73 **** the number of D: 86 **** the number of W: 78
+	7, 19, 12, 11,      12, 8, 10, 14
+	8, 12, 14, 2,      13, 17, 15, 15
+	9, 18, 2, 14,      14, 14, 11, 10
+	10, 18, 12, 12,      15, 3, 8, 6
+	11, 5, 8, 17,      16, 6, 3, 15
+	12, 6, 13, 6,      17, 17, 2, 15
+	For the above 6 lines, the number of A: 78 **** the number of D: 61 **** the number of W: 62
+	13, 8, 10, 14,      18, 6, 5, 11
+	14, 17, 15, 15,      19, 11, 10, 11
+	15, 14, 11, 10,      20, 10, 14, 17
+	16, 3, 8, 6,      21, 9, 14, 6
+	17, 6, 3, 15,      22, 11, 17, 16
+	18, 17, 2, 15,      23, 14, 10, 3
+	For the above 6 lines, the number of A: 65 **** the number of D: 49 **** the number of W: 75
+	19, 6, 5, 11,      24, 10, 18, 7
+	20, 11, 10, 11,      25, 4, 1, 9
+	21, 10, 14, 17,      26, 9, 7, 0
+	22, 9, 14, 6,      27, 8, 4, 17
+	23, 11, 17, 16,      28, 16, 11, 5
+	24, 14, 10, 3,      29, 3, 3, 5
+	For the above 6 lines, the number of A: 61 **** the number of D: 70 **** the number of W: 64
+	25, 10, 18, 7,      30, 10, 7, 0
+	26, 4, 1, 9,      31, 13, 9, 9
+	27, 9, 7, 0,      32, 5, 18, 17
+	28, 8, 4, 17,      33, 11, 17, 3
+	29, 16, 11, 5,      34, 18, 1, 4
+	30, 3, 3, 5,      35, 0, 3, 10
+	For the above 6 lines, the number of A: 50 **** the number of D: 44 **** the number of W: 43
+	31, 10, 7, 0,      36, 9, 19, 7
+	32, 13, 9, 9,      37, 12, 2, 18
+	33, 5, 18, 17,      38, 12, 14, 2
+	34, 11, 17, 3,      39, 1, 9, 3
+	35, 18, 1, 4,      40, 5, 17, 5
+	36, 0, 3, 10,      41, 5, 0, 7
+	For the above 6 lines, the number of A: 57 **** the number of D: 55 **** the number of W: 43
+	37, 9, 19, 7,      42, 18, 1, 9
+	38, 12, 2, 18,      43, 14, 6, 11
+	39, 12, 14, 2,      44, 0, 0, 0
+	40, 1, 9, 3,      45, 0, 0, 0
+	41, 5, 17, 5,      46, 0, 0, 0
+	42, 5, 0, 7,      47, 0, 0, 0
+	For the above 6 lines, the number of A: 44 **** the number of D: 61 **** the number of W: 42
+	43, 18, 1, 9,      48, 0, 0, 0
+	44, 14, 6, 11,      49, 0, 0, 0
+	\end{lstlisting}
+	% End SubSubSection
+	
+	\newpage
+	
+% End SubSection
+
+\subsection{Error Handling - Too many lines in input file}
+% Begin SubSection
+	\subsubsection{Validation}
+	% Begin SubSubSection
+	The file test3.txt was used for this test.  This test revealed that the program
+	did not gracefully reject files that were too long.  Instead, an exception was
+	returned in the console to the user.
+	% End SubSubSection
+	
+	\subsubsection{Verification}
+	% Begin SubSubSection
+	\begin{lstlisting}
+	Welcome to The Record Processor
+	-------------------------------
+	Please input the input file name: test3.txt
+	Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 50
+		at RecordReader.readThirdFieldsFromFile(RecordReader.java:47)
+		at RecordProcessor.main(RecordProcessor.java:136)
+	\end{lstlisting}
+	% End SubSubSection
+	
+	\newpage
+	
+% End SubSection
+
+\subsection{Stress Testing - File with maximum number of lines as input}
+% Begin SubSection
+	\subsubsection{Control}
+	% Begin SubSubSection
+	The file test4.txt was used for this test.  This test revealed that the program
+	does not accept as input a file that contains 50 lines.  The maximum number of
+	lines that the program will accept in its current state is 49.  A summary of
+	this defect and how to fix it can be found on the next page.
+	% End SubSubSection
+	
+	\subsubsection{Inputs}
+	% Begin SubSubSection
+	\begin{lstlisting}
+	Welcome to The Record Processor
+	-------------------------------
+	Please input the input file name: test4.txt
+	Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 50
+		at RecordProcessor.process(RecordProcessor.java:41)
+		at RecordProcessor.main(RecordProcessor.java:140)
+	\end{lstlisting}
+	% End SubSubSection
+	
+	\newpage
+	
+% End SubSection
+
+\subsection{Analysis Summary}
+% Begin SubSection
+
+	\subsubsection{Capabilities}
+	% Begin SubSubSection
+	In its current state, this program is only capable of producing acceptable
+	output on files containing zero lines.  These tests have shown multiple
+	discrepencies between the expected and actual outputs, and have shown numerous
+	defects in the program.
+	% End SubSection
+	
+	\subsubsection{Deficiencies}
+	% Begin SubSubSection
+	The program falls short on producing adequate output when the user attempts to
+	process any file of length greater than one.  Due to the program skipping
+	lines, miscalculating sums, and reporting zeros for all instances of `'W'', the
+	programs output is not to be trusted in its current state.
+	% End SubSection
+	
+	\subsubsection{Risks}
+	% Begin SubSubSection
+	Should this program be placed in production, anything that uses its output will
+	likely fail.  Since the program does not live up to its specification, and
+	produces extremely poor results, the consequences of using this software could
+	be catastrophic.
+	% End SubSection
+	
+	\subsubsection{Reccommendations}
+	% Begin SubSubSection
+	Before this program is placed in production.  I advise that the steps detailed
+	in the numerous problem documents are followed.  Once these steps have been put
+	in place.  It is advised that the original test plan is run again before any
+	additional tests take place.
+	% End SubSection
+	
+
+\end{document}
+%------------------------------------------------------------------------------
