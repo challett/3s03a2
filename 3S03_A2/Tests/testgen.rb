@@ -15,68 +15,74 @@ outfiles.each do |i|
       nextline += ",s,D"
       infile.puts nextline
     end
+    infile.close
   elsif i == "test2.txt"
 
   elsif i == "test3.txt"
-      51.times do
-        nextline = "t,e,"
-        j = rand(20)
-        nextline += "A" * j
-        k = rand(20)
-        nextline += "D" * k
-        z = rand(20)
-        nextline += "W" * z
-        nextline += ",s,D"
-        infile.puts nextline
-      end
-  elsif (i == "test4.txt")
-      50.times do
-        nextline = "t,e,"
-        j = rand(20)
-        nextline += "A" * j
-        k = rand(20)
-        nextline += "D" * k
-        z = rand(20)
-        nextline += "W" * z
-        nextline += ",s,D"
-        infile.puts nextline
-      end
-  elsif (i == "test5.txt")
-      10.times do
-        nextline = "t,e,"
-        nextline += "A" * (2**20 + 1)
-        nextline += "D" * 5
-        nextline += "W"
-        nextline += ",s,D"
-        infile.puts nextline
-      end
-  elsif (i == "test6.txt")
-      10.times do
-        nextline = "t,e,"
-        nextline += "A" * (2**20)
-        nextline += "D" * 5
-        nextline += "W"
-        nextline += ",s,D"
-        infile.puts nextline
-      end
-    elsif i == "test7.txt"
-      rand(50).times do
-        nextline = "t,e,"
-        j = rand(20)
-        nextline += "A" * j
-        k = rand(20)
-        nextline += "D" * k
-        z = rand(20)
-        nextline += "W" * z
-        nextline += ",s,D"
-        infile.puts nextline
-      end
-      infile.close
+    51.times do
+      nextline = "t,e,"
+      j = rand(20)
+      nextline += "A" * j
+      k = rand(20)
+      nextline += "D" * k
+      z = rand(20)
+      nextline += "W" * z
+      nextline += ",s,D"
+      infile.puts nextline
+    end
+    infile.close
+elsif (i == "test4.txt")
+    50.times do
+      nextline = "t,e,"
+      j = rand(20)
+      nextline += "A" * j
+      k = rand(20)
+      nextline += "D" * k
+      z = rand(20)
+      nextline += "W" * z
+      nextline += ",s,D"
+      infile.puts nextline
+    end
+    infile.close
+elsif (i == "test5.txt")
+    10.times do
+      nextline = "t,e,"
+      nextline += "A" * (2**20 + 1)
+      nextline += "D" * 5
+      nextline += "W"
+      nextline += ",s,D"
+      infile.puts nextline
+    end
+    infile.close
+elsif (i == "test6.txt")
+    10.times do
+      nextline = "t,e,"
+      nextline += "A" * (2**20 - 6)
+      nextline += "D" * 5
+      nextline += "W"
+      nextline += ",s,D"
+      infile.puts nextline
+    end
+    infile.close
+  elsif i == "test7.txt"
+    rand(50).times do
+      nextline = "t,e,"
+      j = rand(20)
+      nextline += "A" * j
+      k = rand(20)
+      nextline += "D" * k
+      z = rand(20)
+      nextline += "W" * z
+      nextline += ",s,D"
+      infile.puts nextline
+    end
+    infile.close
   end
-  puts("done creating test case")
+  puts("Done creating test case")
 
 
   #Start making output files
+
   infile = File.open(i , "r")
   filedata = infile.readlines
   infile.close
@@ -102,6 +108,7 @@ outfiles.each do |i|
   dsum = 0
   wsum = 0
   filedata.each_index do |j|
+
     thirdentry = filedata[j][2]
     anum = thirdentry.count("A")
     asum += anum
